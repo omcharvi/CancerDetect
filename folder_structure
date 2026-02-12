@@ -1,0 +1,14 @@
+
+CancerDetect/
+│
+├── app/
+│   ├── main.py
+│   ├── model_loader.py
+│   ├── prediction_engine.py
+│   ├── schemas.py
+│
+├── model/
+│   └── svm_model.pkl   (we will add later)
+│
+├── requirements.txt
+└── README.md
