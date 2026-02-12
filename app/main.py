@@ -9,10 +9,11 @@ app = FastAPI()
 
 # Load model once when app starts
 try:
-    model_loader = ModelLoader("model/svm_model.pkl")
-    prediction_engine = PredictionEngine(model_loader.model)
+    model = joblib.load("model/svm_model.pkl")
+    print("✅ Model loaded successfully")
 except Exception as e:
-    print("Error loading model:", e)
+    print("❌ Error loading model:", e)
+    model = None
 
 @app.get("/")
 def home():

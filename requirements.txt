@@ -3,7 +3,7 @@ fastapi
 uvicorn
 pandas
 numpy
-scikit-learn
+scikit-learn==1.4.0
 joblib
 python-multipart
 uvicorn
