@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 import pandas as pd
 import numpy as np
+import joblib as jb
 
 from app.model_loader import ModelLoader
 from app.prediction_engine import PredictionEngine

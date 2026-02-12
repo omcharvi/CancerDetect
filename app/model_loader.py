@@ -1,5 +1,6 @@
 import joblib
+import os
 
-class ModelLoader:
-    def __init__(self, model_path: str):
-        self.model = joblib.load(model_path)
+def load_model():
+    model_path = os.path.join("model", "cancer_model.pkl")
+    return joblib.load(model_path)
