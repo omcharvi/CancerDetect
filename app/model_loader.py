@@ -1,6 +1,9 @@
 import joblib
 import os
 
-def load_model():
-    model_path = os.path.join("model", "cancer_model.pkl")
-    return joblib.load(model_path)
+class ModelLoader:
+    def __init__(self, model_path: str):
+        if not os.path.exists(model_path):
+            raise FileNotFoundError(f"Model file not found: {model_path}")
+
+        self.model = joblib.load(model_path)
