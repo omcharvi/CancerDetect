@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 import pandas as pd
 import numpy as np
+import os
 
 from app.model_loader import ModelLoader
 from app.prediction_engine import PredictionEngine
@@ -9,11 +10,17 @@ app = FastAPI()
 
 # ✅ Use ModelLoader to handle joblib internally
 try:
-    loader = ModelLoader("model/svm_model.pkl")
+    current_dir = os.path.dirname(__file__)
+    model_path = os.path.join(current_dir, "..", "model", "svm_model.pkl")
+
+    print("Looking for model at:", model_path)
+
+    loader = ModelLoader(model_path)
     model = loader.model
+
     print("✅ Model loaded successfully")
 except Exception as e:
-    print("❌ Error loading model:", e)
+    print("❌ Error loading model:", str(e))
     model = None
 
 prediction_engine = PredictionEngine(model)
