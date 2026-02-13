@@ -1,7 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 import pandas as pd
 import numpy as np
-import joblib as jb
+import joblib 
 
 from app.model_loader import ModelLoader
 from app.prediction_engine import PredictionEngine
@@ -15,6 +15,8 @@ try:
 except Exception as e:
     print("❌ Error loading model:", e)
     model = None
+
+prediction_engine = PredictionEngine(model)
 
 @app.get("/")
 def home():
