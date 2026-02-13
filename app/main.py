@@ -1,16 +1,16 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 import pandas as pd
 import numpy as np
-import joblib 
 
 from app.model_loader import ModelLoader
 from app.prediction_engine import PredictionEngine
 
 app = FastAPI()
 
-# Load model once when app starts
+# ✅ Use ModelLoader to handle joblib internally
 try:
-    model = joblib.load("model/svm_model.pkl")
+    loader = ModelLoader("model/svm_model.pkl")
+    model = loader.model
     print("✅ Model loaded successfully")
 except Exception as e:
     print("❌ Error loading model:", e)
@@ -44,9 +44,7 @@ def predict(file: UploadFile = File(...)):
         return {
             "prediction": label,
             "probability": probability,
-            "details": {
-                "input_shape": data.shape
-            }
+            "details": {"input_shape": data.shape}
         }
 
     except Exception as e:
