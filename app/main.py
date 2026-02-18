@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi.middleware.cors import CORSMiddleware  
 import pandas as pd
 import numpy as np
 import os
@@ -8,7 +9,16 @@ from app.prediction_engine import PredictionEngine
 
 app = FastAPI()
 
-# ✅ Use ModelLoader to handle joblib internally
+# ✅ CORS must be added RIGHT AFTER app is created
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Load model
 try:
     current_dir = os.path.dirname(__file__)
     model_path = os.path.join(current_dir, "..", "model", "svm_model.pkl")
@@ -32,20 +42,15 @@ def home():
 @app.post("/predict")
 def predict(file: UploadFile = File(...)):
     try:
-        # Read CSV
         df = pd.read_csv(file.file)
 
-        # Validate number of features
         if df.shape[1] != 30:
             raise HTTPException(
                 status_code=422,
                 detail="CSV file must contain exactly 30 features"
             )
 
-        # Convert to numpy
         data = df.values
-
-        # Get prediction
         label, probability = prediction_engine.predict(data)
 
         return {
